@@ -351,6 +351,11 @@ void DumpStackTraceToString(string* stacktrace) {
 }
 #endif
 
+#if defined(GLOG_OS_WINDOWS) && defined(UNICODE)
+std::wstring ConvertString2WString(const std::string& str) { return {}; }
+std::string ConvertWString2String(const std::wstring& wstr) { return {}; }
+#endif  //
+
 // We use an atomic operation to prevent problems with calling CrashReason
 // from inside the Mutex implementation (potentially through RAW_CHECK).
 static const CrashReason* g_reason = nullptr;
@@ -364,7 +369,7 @@ void SetCrashReason(const CrashReason* r) {
 void InitGoogleLoggingUtilities(const char* argv0) {
   CHECK(!IsGoogleLoggingInitialized())
       << "You called InitGoogleLogging() twice!";
-  const char* slash = strrchr(argv0, '/');
+  const char* slash = strrchr(argv0, '/'); 
 #ifdef GLOG_OS_WINDOWS
   if (!slash)  slash = strrchr(argv0, '\\');
 #endif

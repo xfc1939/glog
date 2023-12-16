@@ -189,6 +189,10 @@ inline T sync_val_compare_and_swap(T* ptr, T oldval, T newval) {
 
 void DumpStackTraceToString(std::string* stacktrace);
 
+#if defined(GLOG_OS_WINDOWS) && defined(UNICODE)
+std::wstring ConvertString2WString(const std::string& str);
+std::string ConvertWString2String(const std::wstring& wstr);
+#endif  //
 struct CrashReason {
   CrashReason() = default;
 

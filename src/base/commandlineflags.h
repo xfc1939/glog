@@ -108,6 +108,15 @@
   }                                                           \
   using fLS::FLAGS_##name
 
+#define DEFINE_wstring(name, value, meaning)                   \
+  namespace fLS {                                             \
+  std::wstring FLAGS_##name##_buf(value);                      \
+  GLOG_EXPORT std::wstring& FLAGS_##name = FLAGS_##name##_buf; \
+  char FLAGS_no##name;                                        \
+  }                                                           \
+  using fLS::FLAGS_##name
+
+
 #endif  // HAVE_LIB_GFLAGS
 
 // Define GLOG_DEFINE_* using DEFINE_* . By using these macros, we
@@ -129,6 +138,8 @@
 #define GLOG_DEFINE_string(name, value, meaning) \
   DEFINE_string(name, EnvToString("GLOG_" #name, value), meaning)
 
+#define GLOG_DEFINE_wstring(name, value, meaning) \
+  DEFINE_wstring(name, value, meaning)
 // These macros (could be functions, but I don't want to bother with a .cc
 // file), make it easier to initialize flags from the environment.
 
